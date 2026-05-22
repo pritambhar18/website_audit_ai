@@ -75,24 +75,34 @@ export default function Home() {
                 setAppState("error");
               } else if (evt.sessionId) {
                 setSessionId(evt.sessionId);
-                // Load audit data from tmp via a simple fetch
-                const dataRes = await fetch(`/api/data?sessionId=${evt.sessionId}`);
-                if (dataRes.ok) {
-                  const data: AuditResult = await dataRes.json();
-                  setAuditData(data);
+                // Load audit data from OS tmp via a simple fetch
+                try {
+                  const dataRes = await fetch(`/api/data?sessionId=${evt.sessionId}`);
+                  if (dataRes.ok) {
+                    const data: AuditResult = await dataRes.json();
+                    setAuditData(data);
+                  }
+                } catch {
+                  // auditData failed to load but sessionId is available — PDF can still be downloaded
                 }
-                setAppState("complete");
+                setAppState("complete"); // Always transition so Download PDF button appears
               }
             }
           } catch { /* skip malformed SSE */ }
         }
+      }
+      // If the SSE stream closed without a 'done' event (server crash mid-audit),
+      // transition to error state so the user is informed.
+      if (appState === "running") {
+        setError("The audit stream closed unexpectedly. Check Vercel function logs for details.");
+        setAppState("error");
       }
     } catch (err: unknown) {
       if (err instanceof Error && err.name === "AbortError") return;
       setError(err instanceof Error ? err.message : "Unknown error");
       setAppState("error");
     }
-  }, [url]);
+  }, [url, appState]);
 
   const downloadPDF = () => {
     if (sessionId) window.open(`/api/report?sessionId=${sessionId}`, "_blank");

@@ -22,12 +22,14 @@ export async function getBrowser(): Promise<Browser> {
   const isVercel = process.env.VERCEL === "1";
 
   if (isVercel) {
-    // Serverless: load sparticuz chromium via standard dynamic import.
-    // serverExternalPackages in next.config.ts prevents compile-time bundling.
-    const chromium = (await import("@sparticuz/chromium-min")).default;
+    // Use new Function to prevent Turbopack from statically analysing this import
+    // and placing it into the root server chunk (which causes ERR_MODULE_NOT_FOUND).
+    // The outputFileTracingIncludes in next.config.ts ensures the files are deployed.
+    // eslint-disable-next-line no-new-func
+    const chromiumMod = await new Function('return import("@sparticuz/chromium-min")')();
+    const chromium = chromiumMod.default ?? chromiumMod;
     const { chromium: playwrightChromium } = await import("playwright-core");
-    // Provide a remote URL so Sparticuz downloads the binary directly, 
-    // bypassing Vercel's missing node_modules/bin issue.
+    // Remote URL: sparticuz/chromium-min requires the binary to be fetched at runtime.
     const packUrl = "https://github.com/Sparticuz/chromium/releases/download/v148.0.0/chromium-v148.0.0-pack.x64.tar";
     const executablePath = await chromium.executablePath(packUrl);
     _browser = await playwrightChromium.launch({

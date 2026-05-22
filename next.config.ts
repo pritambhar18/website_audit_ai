@@ -7,7 +7,10 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "10mb",
     },
     outputFileTracingIncludes: {
-      "/api/audit": ["./node_modules/@sparticuz/chromium-min/**/*"],
+      "/**": [
+        "./node_modules/@sparticuz/chromium-min/**",
+        "./node_modules/playwright-core/**",
+      ],
     },
   } as any,
 };
