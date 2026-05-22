@@ -28,7 +28,7 @@ export async function getBrowser(): Promise<Browser> {
     const { chromium: playwrightChromium } = await import("playwright-core");
     // Provide a remote URL so Sparticuz downloads the binary directly, 
     // bypassing Vercel's missing node_modules/bin issue.
-    const packUrl = "https://github.com/Sparticuz/chromium/releases/download/v148.0.0/chromium-v148.0.0-pack.tar";
+    const packUrl = "https://github.com/Sparticuz/chromium/releases/download/v148.0.0/chromium-v148.0.0-pack.x64.tar";
     const executablePath = await chromium.executablePath(packUrl);
     _browser = await playwrightChromium.launch({
       args: chromium.args,
