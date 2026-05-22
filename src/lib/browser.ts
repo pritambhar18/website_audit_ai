@@ -1,6 +1,6 @@
 // src/lib/browser.ts
-// Playwright browser factory — works on both local Windows (playwright) and
-// serverless Linux (playwright-core + @sparticuz/chromium-min)
+// Playwright browser factory — uses full Playwright with its bundled Chromium.
+// Works on local dev (Windows/Mac/Linux) and on Render/Docker persistent servers.
 
 import type { Browser, Page, BrowserContext } from "playwright-core";
 
@@ -8,40 +8,15 @@ let _browser: Browser | null = null;
 
 /**
  * Returns a shared Playwright Chromium browser instance.
- * Reuses the instance if already launched (important for serverless cold starts).
- *
- * On Vercel/serverless we load @sparticuz/chromium-min via new Function()
- * so that Turbopack / webpack never statically analyses the import path
- * (serverExternalPackages alone is not enough with Turbopack).
+ * Reuses the instance if already launched.
  */
 export async function getBrowser(): Promise<Browser> {
   if (_browser && _browser.isConnected()) {
     return _browser;
   }
 
-  const isVercel = process.env.VERCEL === "1";
-
-  if (isVercel) {
-    // Use new Function to prevent Turbopack from statically analysing this import
-    // and placing it into the root server chunk (which causes ERR_MODULE_NOT_FOUND).
-    // The outputFileTracingIncludes in next.config.ts ensures the files are deployed.
-    // eslint-disable-next-line no-new-func
-    const chromiumMod = await new Function('return import("@sparticuz/chromium-min")')();
-    const chromium = chromiumMod.default ?? chromiumMod;
-    const { chromium: playwrightChromium } = await import("playwright-core");
-    // Remote URL: sparticuz/chromium-min requires the binary to be fetched at runtime.
-    const packUrl = "https://github.com/Sparticuz/chromium/releases/download/v148.0.0/chromium-v148.0.0-pack.x64.tar";
-    const executablePath = await chromium.executablePath(packUrl);
-    _browser = await playwrightChromium.launch({
-      args: chromium.args,
-      executablePath,
-      headless: true,
-    });
-  } else {
-    // Local development (Windows / Mac / Linux): use full playwright install
-    const { chromium } = await import("playwright");
-    _browser = await chromium.launch({ headless: true });
-  }
+  const { chromium } = await import("playwright");
+  _browser = await chromium.launch({ headless: true });
 
   return _browser;
 }
