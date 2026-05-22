@@ -1,0 +1,6 @@
+{
+  "functions": {
+    "src/app/api/audit/route.ts": { "maxDuration": 300 },
+    "src/app/api/report/route.ts": { "maxDuration": 60 }
+  }
+}
