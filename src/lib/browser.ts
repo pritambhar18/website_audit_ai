@@ -26,7 +26,10 @@ export async function getBrowser(): Promise<Browser> {
     // serverExternalPackages in next.config.ts prevents compile-time bundling.
     const chromium = (await import("@sparticuz/chromium-min")).default;
     const { chromium: playwrightChromium } = await import("playwright-core");
-    const executablePath = await chromium.executablePath();
+    // Provide a remote URL so Sparticuz downloads the binary directly, 
+    // bypassing Vercel's missing node_modules/bin issue.
+    const packUrl = "https://github.com/Sparticuz/chromium/releases/download/v148.0.0/chromium-v148.0.0-pack.tar";
+    const executablePath = await chromium.executablePath(packUrl);
     _browser = await playwrightChromium.launch({
       args: chromium.args,
       executablePath,
