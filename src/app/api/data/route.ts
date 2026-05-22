@@ -5,6 +5,7 @@
 import { type NextRequest } from "next/server";
 import { readFile } from "fs/promises";
 import { join } from "path";
+import { tmpdir } from "os";
 import type { AuditResult } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -16,7 +17,7 @@ export async function GET(request: NextRequest) {
     return Response.json({ error: "Invalid sessionId" }, { status: 400 });
   }
 
-  const filePath = join(process.cwd(), "tmp", `${sessionId}.json`);
+  const filePath = join(tmpdir(), `${sessionId}.json`);
 
   try {
     const raw = await readFile(filePath, "utf-8");

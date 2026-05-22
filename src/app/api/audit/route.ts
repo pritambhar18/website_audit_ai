@@ -6,6 +6,7 @@
 import { type NextRequest } from "next/server";
 import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
+import { tmpdir } from "os";
 import { getBrowser } from "@/lib/browser";
 import { auditLinks } from "@/lib/auditors/links";
 import { auditResponsive } from "@/lib/auditors/responsive";
@@ -300,9 +301,8 @@ export async function GET(request: NextRequest) {
           ...severityCounts,
         };
 
-        // Store in /tmp
-        const tmpDir = join(process.cwd(), "tmp");
-        await mkdir(tmpDir, { recursive: true });
+        // Store in OS temp directory (works on Vercel)
+        const tmpDir = tmpdir();
         await writeFile(
           join(tmpDir, `${sessionId}.json`),
           JSON.stringify(auditResult),

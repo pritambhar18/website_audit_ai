@@ -6,6 +6,7 @@
 import { type NextRequest } from "next/server";
 import { readFile } from "fs/promises";
 import { join } from "path";
+import { tmpdir } from "os";
 import { generateReport } from "@/lib/pdf/generator";
 import type { AuditResult } from "@/lib/types";
 
@@ -22,7 +23,7 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const filePath = join(process.cwd(), "tmp", `${sessionId}.json`);
+  const filePath = join(tmpdir(), `${sessionId}.json`);
 
   let auditData: AuditResult;
 
