@@ -6,7 +6,10 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: "10mb",
     },
-  },
+    outputFileTracingIncludes: {
+      "/api/audit": ["./node_modules/@sparticuz/chromium-min/bin/**"],
+    },
+  } as any,
 };
 
 export default nextConfig;
