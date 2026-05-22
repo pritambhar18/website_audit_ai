@@ -22,14 +22,9 @@ export async function getBrowser(): Promise<Browser> {
   const isVercel = process.env.VERCEL === "1";
 
   if (isVercel) {
-    // Serverless: load sparticuz chromium via an opaque dynamic import so
-    // that bundlers never try to resolve the module at build time.
-    // new Function prevents static analysis by Turbopack / webpack.
-    // eslint-disable-next-line no-new-func
-    const chromium = (
-      await new Function('return import("@sparticuz/chromium-min")')()
-    ).default;
-
+    // Serverless: load sparticuz chromium via standard dynamic import.
+    // serverExternalPackages in next.config.ts prevents compile-time bundling.
+    const chromium = (await import("@sparticuz/chromium-min")).default;
     const { chromium: playwrightChromium } = await import("playwright-core");
     const executablePath = await chromium.executablePath();
     _browser = await playwrightChromium.launch({
