@@ -3,6 +3,12 @@
 // Works on local dev (Windows/Mac/Linux) and on Render/Docker persistent servers.
 
 import type { Browser, Page, BrowserContext } from "playwright-core";
+import path from "path";
+
+// Set Playwright browser path to the project directory on Render/Production
+if (process.env.RENDER || process.env.NODE_ENV === "production") {
+  process.env.PLAYWRIGHT_BROWSERS_PATH = path.join(process.cwd(), "ms-playwright");
+}
 
 let _browser: Browser | null = null;
 
