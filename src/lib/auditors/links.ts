@@ -6,8 +6,8 @@ import type { Page } from "playwright-core";
 import type { Issue, LinkResult, LinksAuditResult } from "../types";
 import { nanoid } from "../utils";
 
-const CONCURRENT_CHECKS = 10;
-const TIMEOUT_MS = 10_000;
+const CONCURRENT_CHECKS = 25;
+const TIMEOUT_MS = 4000;
 
 /** Extracts all unique, absolute hrefs from the page. */
 async function extractLinks(page: Page, baseUrl: string): Promise<string[]> {

@@ -11,122 +11,6 @@ import { nanoid } from "../utils";
 // ─── Device Matrix ────────────────────────────────────────────────────────────
 
 export const DEVICE_PROFILES: DeviceProfile[] = [
-  // ─── Mobile ────────────────────────────────────────────────────────
-  {
-    name: "iPhone 13 (Portrait)",
-    category: "mobile",
-    width: 390,
-    height: 844,
-    orientation: "portrait",
-    userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1",
-  },
-  {
-    name: "iPhone 13 (Landscape)",
-    category: "mobile",
-    width: 844,
-    height: 390,
-    orientation: "landscape",
-    userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1",
-  },
-  {
-    name: "iPhone 14 Pro Max (Portrait)",
-    category: "mobile",
-    width: 430,
-    height: 932,
-    orientation: "portrait",
-    userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1",
-  },
-  {
-    name: "iPhone 14 Pro Max (Landscape)",
-    category: "mobile",
-    width: 932,
-    height: 430,
-    orientation: "landscape",
-    userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1",
-  },
-  {
-    name: "iPhone 16 Plus (Portrait)",
-    category: "mobile",
-    width: 430,
-    height: 932,
-    orientation: "portrait",
-    userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1",
-  },
-  {
-    name: "iPhone 16 Plus (Landscape)",
-    category: "mobile",
-    width: 932,
-    height: 430,
-    orientation: "landscape",
-    userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1",
-  },
-
-  // ─── Tablet ────────────────────────────────────────────────────────
-  {
-    name: "Samsung Galaxy Tab S9 FE (Portrait)",
-    category: "tablet",
-    width: 800,
-    height: 1280,
-    orientation: "portrait",
-    userAgent: "Mozilla/5.0 (Linux; Android 14; SM-X510) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-  },
-  {
-    name: "Samsung Galaxy Tab S9 FE (Landscape)",
-    category: "tablet",
-    width: 1280,
-    height: 800,
-    orientation: "landscape",
-    userAgent: "Mozilla/5.0 (Linux; Android 14; SM-X510) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-  },
-  {
-    name: "iPad 6th Generation (Portrait)",
-    category: "tablet",
-    width: 768,
-    height: 1024,
-    orientation: "portrait",
-    userAgent: "Mozilla/5.0 (iPad; CPU OS 12_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0 Mobile/15E148 Safari/604.1",
-  },
-  {
-    name: "iPad 6th Generation (Landscape)",
-    category: "tablet",
-    width: 1024,
-    height: 768,
-    orientation: "landscape",
-    userAgent: "Mozilla/5.0 (iPad; CPU OS 12_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0 Mobile/15E148 Safari/604.1",
-  },
-  {
-    name: "iPad Air 11-inch (Portrait)",
-    category: "tablet",
-    width: 820,
-    height: 1180,
-    orientation: "portrait",
-    userAgent: "Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
-  },
-  {
-    name: "iPad Air 11-inch (Landscape)",
-    category: "tablet",
-    width: 1180,
-    height: 820,
-    orientation: "landscape",
-    userAgent: "Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
-  },
-  {
-    name: "iPad Pro 12.9-inch (Portrait)",
-    category: "tablet",
-    width: 1024,
-    height: 1366,
-    orientation: "portrait",
-    userAgent: "Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
-  },
-  {
-    name: "iPad Pro 12.9-inch (Landscape)",
-    category: "tablet",
-    width: 1366,
-    height: 1024,
-    orientation: "landscape",
-    userAgent: "Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
-  },
-
   // ─── Desktop ───────────────────────────────────────────────────────
   {
     name: "Desktop Chrome (1920×1080)",
@@ -135,12 +19,23 @@ export const DEVICE_PROFILES: DeviceProfile[] = [
     height: 1080,
     userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
   },
+  // ─── Mobile ────────────────────────────────────────────────────────
   {
-    name: "Desktop Safari / WebKit (1440×900)",
-    category: "desktop",
-    width: 1440,
-    height: 900,
-    userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Safari/605.1.15",
+    name: "iPhone 14 Pro Max (Portrait)",
+    category: "mobile",
+    width: 430,
+    height: 932,
+    orientation: "portrait",
+    userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1",
+  },
+  // ─── Tablet ────────────────────────────────────────────────────────
+  {
+    name: "iPad Air 11-inch (Landscape)",
+    category: "tablet",
+    width: 1180,
+    height: 820,
+    orientation: "landscape",
+    userAgent: "Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
   },
 ];
 

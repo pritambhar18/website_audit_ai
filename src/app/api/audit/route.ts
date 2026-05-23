@@ -124,6 +124,9 @@ export async function GET(request: NextRequest) {
 
         const html = await initPage.content();
 
+        // Start the slow Google PageSpeed / Performance audit in the background concurrently
+        const performancePromise = auditPerformance(url);
+
         // ── Step 2: Link Validation ──
         emit({
           step: steps[0],
@@ -253,7 +256,7 @@ export async function GET(request: NextRequest) {
           message: "Fetching Google PageSpeed Insights...",
         });
 
-        const performance = await auditPerformance(url);
+        const performance = await performancePromise;
 
         // ── Step 10: Compile results ──
         emit({
