@@ -4,6 +4,7 @@
 
 import type { Browser, Page, BrowserContext } from "playwright-core";
 import path from "path";
+import sharp from "sharp";
 
 // Set Playwright browser path to the project directory on Render/Production
 if (process.env.RENDER || process.env.NODE_ENV === "production") {
@@ -22,7 +23,10 @@ export async function getBrowser(): Promise<Browser> {
   }
 
   const { chromium } = await import("playwright");
-  _browser = await chromium.launch({ headless: true });
+  _browser = await chromium.launch({
+    headless: true,
+    args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"]
+  });
 
   return _browser;
 }
@@ -65,11 +69,28 @@ export async function getPage(
 }
 
 /**
+ * Resizes and compresses an image buffer using sharp to reduce base64 size.
+ * Resizes to a maximum width (maintaining aspect ratio) and compresses with lower quality.
+ */
+export async function compressImage(buf: Buffer, maxWidth = 800): Promise<Buffer> {
+  try {
+    return await sharp(buf)
+      .resize({ width: maxWidth, withoutEnlargement: true })
+      .jpeg({ quality: 60, mozjpeg: true })
+      .toBuffer();
+  } catch (err) {
+    console.error("Failed to compress image using sharp:", err);
+    return buf; // Fallback to original buffer
+  }
+}
+
+/**
  * Takes a full-page screenshot and returns it as a Buffer.
  */
 export async function takeFullPageScreenshot(page: Page): Promise<Buffer> {
-  const buf = await page.screenshot({ fullPage: true, type: "jpeg", quality: 80 });
-  return Buffer.from(buf);
+  const buf = await page.screenshot({ fullPage: true, type: "jpeg", quality: 70 });
+  const compressed = await compressImage(Buffer.from(buf), 800);
+  return compressed;
 }
 
 /**
@@ -81,3 +102,4 @@ export async function closeBrowser(): Promise<void> {
     _browser = null;
   }
 }
+
